@@ -4,6 +4,7 @@ import { Products } from '../../shared/interfaces/product.interface';
 import { CardComponent } from './components/card/card.component';
 import { RouterLink } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
+import { Router } from '@angular/router';
 
 
 
@@ -16,6 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
 })
 export class ListComponent {
   productsService = inject(ProductsService);
+  router = inject(Router);
 
   products: Products[] = [];
 
@@ -23,5 +25,8 @@ export class ListComponent {
     this.productsService.getAll().subscribe((products)=>{
       this.products = products  
     });
+  }
+  onEdit(){
+    this.router.navigateByUrl('/edit-product');
   }
 }
