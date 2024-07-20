@@ -12,19 +12,20 @@ import { ProductsService } from '../../../../shared/services/products.service';
   styleUrl: './card.component.css'
 })
 export class CardComponent {
-onDelete() {
-throw new Error('Method not implemented.');
-}
   product = input.required<Products>();
   productService = inject(ProductsService);
   @Output() edit = new EventEmitter();
-
+  @Output() delete = new EventEmitter();
+  
   productTitle = computed(()=> this.product().title);
   productId = computed(()=> this.product().id);
-
+  
   onEdit(){
     this.edit.emit();
   }
-
-
+  
+  onDelete() {
+    this.delete.emit();
+  }
+  
 }
