@@ -7,15 +7,25 @@ import { ProductsPayload } from '../interfaces/payload-products.interface';
   providedIn: 'root'
 })
 export class ProductsService {
-  httpClient = inject(HttpClient);
-  
-  getAll(){
-  return this.httpClient.get<Products[]>('api/products');
-}
+  private httpClient = inject(HttpClient);
 
-post(payload:ProductsPayload){
-  return this.httpClient.post('api/products',payload);
-    
+  getAll() {
+    return this.httpClient.get<Products[]>('api/products');
   }
-  
+
+  get(id: string) {
+    return this.httpClient.get<Products>(`api/products/${id}`);
+  }
+
+  post(payload: ProductsPayload) {
+    return this.httpClient.post('api/products', payload);
+  }
+
+  put(id: string, payload: ProductsPayload) {
+    return this.httpClient.put(`api/products/${id}`, payload);
+  }
+
+  delete(id: string, payload: ProductsPayload) {
+    return this.httpClient.put(`api/products/${id}`, payload);
+  }
 }
