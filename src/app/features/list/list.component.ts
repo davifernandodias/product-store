@@ -8,34 +8,8 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
 import { Router } from '@angular/router';
 import { DialogModule } from '@angular/cdk/dialog';
 import { filter } from 'rxjs';
+import { ConfirmationDialogService } from '../../shared/services/confirmation-dialog.service';
 
-@Component({
-  selector: 'app-confirmation-dialog',
-  template: `
-  <h2 mat-dialog-title>Delete product</h2>
-  <mat-dialog-content>
-    Would you like to delete this product?
-  </mat-dialog-content>
-  <mat-dialog-actions >
-    <button mat-button (click)="onNot()">No</button>
-    <button mat-raised-button (click)="onYe()" cdkFocusInitial>Ok</button>
-  </mat-dialog-actions>
-  `,
-  standalone: true,
-  imports: [MatButtonModule, MatDialogModule, DialogModule],
-})
-export class ConfirmationDialogComponent {
-  matDialogRef = inject(MatDialogRef);
-
-  onNot(){
-    this.matDialogRef.close(false);
-  }
-  
-  onYe(){
-    alert("boa")
-    this.matDialogRef.close(true);
-  }
-}
 
 @Component({
   selector: 'app-list',
@@ -50,7 +24,7 @@ export class ListComponent {
   
   products: Products[] = [];
 
-  matDialog = inject(MatDialog);
+  confirmationDiologService = inject(ConfirmationDialogService);
   
   ngOnInit() {
     this.productsService.getAll().subscribe((products) => {
@@ -63,16 +37,15 @@ export class ListComponent {
   }
 
   onDelete(product: Products) {
-    this.matDialog
-      .open(ConfirmationDialogComponent)
-      .afterClosed()
-      .pipe(filter(answer => answer === true))
-      .subscribe((answer: boolean) =>{
-        this.productsService.delete(product.id).subscribe(()=>{
-          this.productsService.getAll().subscribe((products)=>{
-            this.products = products;
-          })
-        });
+    this.confirmationDiologService
+    .openDiolog()
+    .pipe(filter(answer => answer === true))
+    .subscribe(() =>{
+      this.productsService.delete(product.id).subscribe(()=>{
+        this.productsService.getAll().subscribe((products)=>{
+          this.products = products;
+        })
+      });
     });
   }
 }

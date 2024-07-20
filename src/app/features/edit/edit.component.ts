@@ -23,7 +23,6 @@ export class EditComponent {
 
 
   public onSubmit(product:Products){
-    debugger
     this.productsService.put( this.product.id,product).subscribe(()=>{
       this.matSanckBar.open('Sucess! Update Product','Ok');
       this.router.navigateByUrl('/')});
